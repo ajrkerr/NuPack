@@ -1,6 +1,18 @@
 NuPack
 ======
 
+Running and Testing Instructions
+============
+To run the tests please install Jasmine first
+npm install -g jasmine-node
+
+Tests can be run with:
+jasmine-node spec
+or
+npm test
+
+
+
 Instructions
 ============
 

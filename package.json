@@ -1,0 +1,22 @@
+{
+  "name": "NuPack",
+  "version": "0.0.0",
+  "description": "A quick quote markup library",
+  "main": "nu-pack.js",
+  "scripts": {
+    "test": "jasmine-node spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ajrkerr/NuPack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajrkerr/NuPack/issues"
+  },
+  "homepage": "https://github.com/ajrkerr/NuPack",
+  "devDependencies": {
+    "jasmine-node": "~1.14.3"
+  }
+}
