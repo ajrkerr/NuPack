@@ -42,11 +42,11 @@
  */
 
 
-// TODO: Refactor for floating point precision (eg. to use integers instead of floats)
 function MarkupMan (config) {
   this.config = config;
 
-  // Validate
+  // Validate, will raise exceptions if the config is
+  // not parsable
   this.calculateMarkup();
 }
 
@@ -76,6 +76,7 @@ MarkupMan.prototype.calculateMarkupGroup = function (markupGroup, options) {
         throw {
           message: "Invalid Markup",
           value:   markupResult,
+          options: options,
           name:    markupName,
           group:   markupGroup
         };

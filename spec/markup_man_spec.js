@@ -1,6 +1,5 @@
 var MarkupMan = require('../markup_man');
 
-
 describe("Markup Man", function () {
 
   describe("when instantiating", function () {
