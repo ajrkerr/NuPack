@@ -9,7 +9,7 @@ describe("Markup Man", function () {
     function constructMarkupMan (percent) {
       return function () {
         new MarkupMan({
-          base: percent
+          base: { baseCase: percent }
         });
       };
     }
@@ -30,34 +30,19 @@ describe("Markup Man", function () {
     });
 
     it("should require the configuration to be numeric", function () {
-      expect(construct(0.05)).not.toThrow();
-      expect(construct(  12)).not.toThrow();
+      expect(constructMarkupMan(0.05)).not.toThrow();
+      expect(constructMarkupMan(  12)).not.toThrow();
 
       // Strange Objects
-      expect(construct(NaN      )).toThrow();
-      expect(construct(null     )).toThrow();
-      expect(construct(undefined)).toThrow();
-      expect(construct({}       )).toThrow();
+      expect(constructMarkupMan(NaN      )).toThrow();
+      expect(constructMarkupMan(null     )).toThrow();
+      expect(constructMarkupMan(undefined)).toThrow();
+      expect(constructMarkupMan({}       )).toThrow();
 
       // Strings
-      expect(construct("as")).toThrow();
-      expect(construct("12")).toThrow();
+      expect(constructMarkupMan("as")).toThrow();
+      expect(constructMarkupMan("12")).toThrow();
     })
-
-    it("should ignore extra functions/attributes on the configuration", function () {
-      var config = {
-        baseGroup: {
-          first: {
-            percent: 0.15,
-            extraAttribute: "OogaBooga"
-          }
-        },
-      }
-
-      var construct = function () { new MarkupMan(config); }
-
-      expect(construct).not.toThrow();
-    });
 
     it("should work with the basecase provided in the docs", function () {
       var config = {
@@ -66,7 +51,7 @@ describe("Markup Man", function () {
         },
         add_ons: {
           books: function (options) {
-            if(options.food == true) {
+            if(options.books == true) {
               return 0.13;
             } else {
               return 0;
@@ -91,46 +76,50 @@ describe("Markup Man", function () {
 
       var markup = new MarkupMan(config);
       expect(markup.calculateTotal(1000)).toBe(1050);
-      expect(markup.calculateTotal(1000, { books: true} )).toBe(1186.50);
     });
 
     it("should work with the percent defined as a function", function () {
       var config = {
         add_ons: {
           books: function (options) {
-            return 0.13;
+            if(options.books == true) {
+              return 0.13;
+            } else {
+              return 0;
+            }
           }
         }
       };
 
       var markup = new MarkupMan(config);
-      expect(markup.calculateTotal(1000)).toBe(1050);
-      expect(markup.calculateTotal(1000, { books: true} )).toBe(1186.50);
+      expect(markup.calculateTotal(1000)).toBe(1000);
+      expect(markup.calculateTotal(1000, { books: true} )).toBe(1130);
+      expect(markup.calculateTotal(1000, { food:  true} )).toBe(1000);
     });
 
     it("should multiply markup groups together", function () {
       var config = {
         base:     { basePercent: 0.05 },
         horseFee: { oatTax:      0.10 },
-        add_ons: {
+        add_ons:  {
           books: function () { return 0.20; }
         }
       };
 
       var markup = new MarkupMan(config);
+
       expect(markup.calculateTotal(1000)).toBe(1386);
-      expect(markup.calculateTotal(1000, { books: true} )).toBe(1186.50);
     })
 
-    it("should return as decimal places/floats", function () {
+    it("should return as floats rounded to two digits", function () {
       var config = {
         base:     { basePercent: 0.05 },
         horseFee: { oatTax:      0.10 },
         add_ons:  { books: function () { return 0.20; } }
-      };;
+      };
 
       var markup = new MarkupMan(config);
-      expect(markup.calculateTotal(1)).toBe(1.386);
+      expect(markup.calculateTotal(1)).toBe(1.39);
     });
 
     it("should add markups within a group together", function () {
@@ -168,6 +157,25 @@ describe("Markup Man", function () {
       var markup = new MarkupMan(config);
       expect(markup.calculateTotal(1000)).toBe(1000);
     });
+
+    it("should pass in an empty object as the options if not set", function () {
+      var config = {
+        add_ons: {
+          books: function (options) {
+            if(options === undefined) {
+              return 0;
+            } else {
+              return 1;
+            }
+          }
+        }
+      };
+
+      var markup = new MarkupMan(config);
+      expect(markup.calculateTotal(1000)).toBe(2000);
+      expect(markup.calculateTotal(1000, {books: true})).toBe(2000);
+    });
+
   });
 
 
@@ -180,7 +188,7 @@ describe("Markup Man", function () {
     var markup = new MarkupMan(config);
 
     it("should provide the total ", function () {
-      expect(markup.calculateTotal(1000)).toBe(1010);
+      expect(markup.calculateTotal(1000)).toBe(1100);
     });
 
     it("should accept 0 as the baseCost", function () {

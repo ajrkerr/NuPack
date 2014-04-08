@@ -18,3 +18,8 @@ Changelog
 - Added implementation for MarkupMan class
 - Added test suite for MarkupMan
 - Bootstrapped project
+
+
+Notes
+============
+Chose javascript for use of a json object with embeded functions to allow for an easy DSL to define the markups
