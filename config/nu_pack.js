@@ -1,3 +1,14 @@
+/***
+ * NuPack Markup Configuration
+ *
+ * This object defines the marup configuration for the nupack system
+ * Markup Groups are defined in the root of the object, and under them are a
+ * list of all markups.
+ *
+ * Markup groups are multiplied together
+ * Markups inside of a group are added together
+ *
+ **/
 
 module.exports = {
   // Flat Markup of 5% on all jobs
@@ -14,7 +25,7 @@ module.exports = {
       if(typeof(people) !== "number" || isNaN(people) || people < 0) {
         people = 0;
       }
-      
+
       return 0.012 * people;
     },
 
