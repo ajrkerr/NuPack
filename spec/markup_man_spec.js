@@ -195,14 +195,15 @@ describe("Markup Man", function () {
     });
 
     it("should gracefully handle null, undefined, and NaN as the input", function () {
-      expect(markup.calculateTotal(NaN)).toBe(0);
+      expect(markup.calculateTotal(NaN      )).toBe(0);
       expect(markup.calculateTotal(undefined)).toBe(0);
-      expect(markup.calculateTotal("Marko")).toBe(0);
-      expect(markup.calculateTotal({})).toBe(0);
+      expect(markup.calculateTotal("Marko"  )).toBe(0);
+      expect(markup.calculateTotal("12Polo" )).toBe(0);
+      expect(markup.calculateTotal({}       )).toBe(0);
     });
 
     it("should attempt to parse a string which is provided as the input", function () {
-      expect(markup.calculateTotal("12345")).toBe(13579.50);
+      expect(markup.calculateTotal("12345"  )).toBe(13579.50);
       expect(markup.calculateTotal("1111.11")).toBe(1222.22);
     });
 

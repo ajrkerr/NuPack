@@ -19,6 +19,26 @@ describe("The NuPack Markup System", function () {
       people: 4,
       books:  true
     })).toBe(13707.63);
+
+  });
+
+  it("should handle a random eclectic example", function () {
+    var options = {
+      people: -1234, // 0%
+      food:    true, // 13%
+      drugs:   true, // 7.5%
+      pokemon: true, // 0%
+      electronics: "Boo Yeah" // 0%
+    };
+
+    expect(NuPack.calculateTotal(1000, options)).toBe(1265.25);
+    expect(NuPack.calculateTotal(   0, options)).toBe(   0   );
+    expect(NuPack.calculateTotal(-123, options)).toBe(-155.63);
+  });
+
+  it("should handle a large number of people", function () {
+    var options = { people: 11234 };
+    expect(NuPack.calculateTotal(1000, options)).toBe(142598.40);
   });
 
   /*
@@ -84,7 +104,7 @@ describe("The NuPack Config", function () {
   });
 
   describe("drugs", function () {
-    it("should markup 075% if present, 0 if not", function () {
+    it("should markup 7.5% if present, 0 if not", function () {
       expect(NuPackConfig.add_ons.drugs({drugs: true})).toBe(0.075);
       expect(NuPackConfig.add_ons.drugs({})).toBe(0);
     });
